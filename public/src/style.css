@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FFE4E1;
+}
+
+h1   {
+text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px
+}
+
+h2   {
+text-align: center;
+  font-size: 18px;
+  margin-top: 10px
+}
+
+tbody {
+  margin-left: 80px;
+  margin-right: 80px
+}
+
+.form-group  {
+  margin-left: 80px;
+  margin-right: 80px;
+  width: 33%
+}
+
+table {
+  margin-left: 70px;
+}
+
+p {
+  margin-left: 70px;
+}
+
+.table_new_message {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.table_all_messages {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.column_1 {
+  width: 16.5%;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+.column_2 {
+  width: 67%x;
+      margin-bottom: 10px;
+      padding: 8px;
+}
+
+.column_3 {
+  width: 67%x;
+      margin-bottom: 10px;
+      padding: 4px;
+}
+
+.column_4 {
+  width: 67%x;
+      margin-bottom: 10px;
+      padding: 4px;
+}
