@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 //   resave: false
 // }))
 
+app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 const User = sequelize.define('users',{
@@ -74,7 +75,11 @@ app.post('/signup', (req,res)=>{
       })
 })
 
-//
+//SIGN UP Page
+
+app.get('/signup', (req, res) => {
+	res.render('signup');
+})
 
 
 // Users.hasMany(Messages);
