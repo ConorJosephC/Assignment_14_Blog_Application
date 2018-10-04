@@ -13,9 +13,58 @@
 
   <%- include partials/navbar.ejs %>
 
-  <h1>Welcome to the Blog Application!</h1>
-  <h1>Write down your thoughts and leave comments on other peoples messages!</h1>
+  <h2>Welcome to the Blog Application!</h2>
+  <h2>Write down your thoughts and leave comments on other peoples messages!</h2>
   <h2>Lets get started!</h2>
+
+
+  <!-- <form action='/', method='POST', autocomplete='off'>
+    <label>Sign in to your account</label>
+    <br>
+    <label>Username:</label>
+    <br>
+    <input type='text', name='name', placeholder="username">
+    <br> -->
+    <!-- <label>Email:</label>
+    <br>
+    <input type='text', name='email', placeholder="email">
+    <br> -->
+    <!-- <label>Password:</label>
+    <br>
+    <input type='password', name='password', placeholder="password">
+     <br>
+     <br>
+    <input type="submit" value="Submit">
+  </form> -->
+
+  <form id="login" action="/" method="POST">
+    <label for="Sign In Text">Sign in to your account</label>
+    <br>
+    <div class="form-group">
+      <label for="exampleInputUsername">Username:</label><br>
+      <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter Your Username">
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputTitle">Password:</label><br>
+        <input type="text" name="password" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Enter Your Password">
+      </div>
+
+        <div class="form-group">
+          <input type="submit" value="Submit">
+      </div>
+    </form>
+
+
+
+
+
+
+  <h6>Don't have an account yet?<br>
+    <a href="/signup" target="_blank">Signup</a></h6>
+
+    <h6>
+    <a href="/logout" target="_blank">Logout</a></h6>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -1,0 +1,53 @@
+<html>
+
+<head>
+
+  <title>Show all posts</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="src/css/style.css">
+
+</head>
+
+<body>
+
+  <%- include partials/navbar.ejs %>
+
+  <h1>Posts from all users!</h1>
+
+
+
+  <table class="show_all_posts">
+
+    <thead scope="row">
+      <tr>
+        <td class="column_1">User:</td>
+        <td class="column_1">Title:</td>
+        <td class="column_2">Message:</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <% for(var i=0; i < messages.length; i++) { %>
+        <td class="column_3">
+          <%= messages[i].username %>
+        </td>
+        <td class="column_3">
+          <%= messages[i].title %>
+        </td>
+        <td class="column_4">
+          <%= messages[i].body %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
