@@ -1,0 +1,8 @@
+Table Users:
+
+Table Posts:
+
+Table Comments:
+
+id              body            postId        userId
+integer         string          integer       integer
