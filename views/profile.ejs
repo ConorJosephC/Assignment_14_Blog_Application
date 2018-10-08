@@ -13,10 +13,14 @@
 
 	<%- include partials/navbar.ejs %>
 
-	<h1>Welcome back + `${username.id}`</h1>
+	<h1>Welcome back to your profile <%=user.username%></h1>
 
 
-	<a href="/post_to_your_blog" target="_blank">Post to your blog</a></h6>
+
+
+	<a href="/yourposts" target="_blank"><h6>All my blog posts</h6></a>
+
+	<a href="/createpost" target="_blank"><h6>Post to your blog</h6></a>
 
 	  <h6>
 	  <a href="/logout" target="_blank">Logout</a></h6>

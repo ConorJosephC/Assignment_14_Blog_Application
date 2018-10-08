@@ -49,56 +49,6 @@
       </div>
     </form>
 
-  <% if(true){ %>
-     <h1>foo</h1>
-   <% } else{ %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <% } %>
-
-
-  	body
-  		if user
-  			a(href='/profile') view profile
-  			br
-  			a(href='/logout') log out
-  		else
-  			form(action='/login' method='post' autocomplete='off')
-  				label email
-  				input#email(name='email', required)
-  				label password
-  				input#password(name='password' type='password' required, maxLength= 10)
-  				input(type='submit' value='login' id='submit')
-
-  		h2#error-message= message
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

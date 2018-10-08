@@ -1,22 +1,27 @@
+// SET DEPENDENCIES ------------------------------------------------------------
+
 const Sequelize = require('sequelize');
 const express = require('express');
 const ejs = require('ejs');
 const session = require('express-session');
+const app = express();
 
 const bodyParser = require('body-parser');
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
-// CONFIG DEPENDENCIES
+// CONFIG DEPENDENCIES ---------------------------------------------------------
 
-const sequelize = new Sequelize('blogapp', 'postgres', 'p0stgr3SQL', {
+const sequelize = new Sequelize('conorblogapp', 'postgres', 'p0stgr3SQL', {
     host: 'localhost',
     dialect: 'postgres'
 })
 
-const app = express();
+// CONNECT WITH TEMPLATE ENGINE FOLDER -----------------------------------------
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
+
+// SET UP SESSION --------------------------------------------------------------
 
 app.use(session({
   store: new SequelizeStore({
@@ -29,13 +34,15 @@ app.use(session({
   resave: false
 }))
 
+// CONNECT WITH PUBLIC FOLDER --------------------------------------------------
+
 app.use(express.static('./public'));
+
+// SET UP BODY PARSER ----------------------------------------------------------
+
 app.use(bodyParser.urlencoded({extended: true}));
 
-
-
-
-//MODELS DEFINITION
+//MODELS DEFINITION ------------------------------------------------------------
 
 const User = sequelize.define('users',{
     username: {
@@ -62,38 +69,44 @@ const User = sequelize.define('users',{
       timestamps: false
     })
 
+    const Post = sequelize.define('posts', {
+        title: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        body: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+    },  {
+       timestamps: false
+     })
 
+    const Comments = sequelize.define('comments', {
+        body: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+    },   {
+        timestamps: false
+      })
 
-const Message = sequelize.define('messages', {
-  title:{
-    type: Sequelize.STRING,
-  },
-  body:{
-    type: Sequelize.STRING,
-  }
-},   {
-    timestamps: false
-  })
+// TABLES RELATIONSHIP/ASSOCIATION ---------------------------------------------
+    User.hasMany(Post, { foreignKey: { allowNull: false } });
+    Post.belongsTo(User, { foreignKey: { allowNull: false } });
+    Comments.belongsTo(Post, { foreignKey: { allowNull: false } });
+    Comments.belongsTo(User, { foreignKey: { allowNull: false } });
 
+// ROUTING----------------------------------------------------------------------
 
-// TABLES RELATIONSHIP/ASSOCIATION
-
-User.hasMany(Message);
-Message.belongsTo(User);
-
-// Messages.hasMany(Commentary);
-// Commentary.belongsTo(Messages);
-
-
-// ROUTING-------------------------------
-
-// 01: HOME PAGE-------------------------
+// 01: HOME PAGE----------------------------------------------------------------
 
 app.get('/', (req, res) => {
-	res.render('home')
-});
+    var user = req.session.user
+    res.render('home', { loginFailed: false })
+})
 
-// 02: CHECKING FOR MATCHING USER INPUT DATA------------
+// 02: CHECKING FOR MATCHING USER INPUT DATA------------------------------------
 
 app.post('/', function (req, res) {
 
@@ -126,136 +139,202 @@ app.post('/', function (req, res) {
   	});
   });
 
-app.get('/logout', (req,res)=>{
-  req.session.destroy(function(error) {
-		if(error) {
-			throw error;
-		}
-		res.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
-	})
-})
+  // 03: LOG OUT (need pathway)-------------------------------------------------
 
-
-
-// 03: SIGNUP-------------------------------------------
-
-app.get('/signup', (req, res) => {
-	res.render('signup');
-})
-
-app.post('/signup', (req,res) => {
-
-  let inputusername = req.body.username
-  let inputfirstname = req.body.firstname
-  let inputlastname = req.body.lastname
-  let inputemail = req.body.email
-  let inputpassword = req.body.password
-
-  User.create({
-    username: inputusername,
-    firstname: inputfirstname,
-    lastname: inputlastname,
-    email: inputemail,
-    password: inputpassword
+  app.get('/logout', (req,res)=>{
+    req.session.destroy(function(error) {
+  		if(error) {
+  			throw error;
+  		}
+  		res.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
+  	})
   })
 
-  .then((user) => {
-        req.session.user = user;
-        res.redirect('/profile');
-      });
-})
+  // 04: SIGN UP----------------------------------------------------------------
 
-app.get('/profile', (req, res)=> {
-  const user = req.session.user
-  // console.log('User info '+ user)
-  res.render('profile', {user: user})
-})
+  app.get('/signup', (req, res) => {
+  	res.render('signup');
+  })
 
-// 04: POST TO YOUR BLOG----------------
+  app.post('/signup', (req,res) => {
 
-app.get('/post_to_your_blog', function (req, res) {
+    let inputusername = req.body.username
+    let inputfirstname = req.body.firstname
+    let inputlastname = req.body.lastname
+    let inputemail = req.body.email
+    let inputpassword = req.body.password
 
-  const user = req.session.user;
+    User.create({
+      username: inputusername,
+      firstname: inputfirstname,
+      lastname: inputlastname,
+      email: inputemail,
+      password: inputpassword
+    })
 
-  if (user === undefined) {
-    res.redirect('/?message=' + encodeURIComponent("Please log in to post a message."));
-  } else {
-    res.render("post_to_your_blog");
+    .then((user) => {
+          req.session.user = user;
+          res.redirect('/profile');
+        });
+  })
+
+  // 05: PROFILE ---------------------------------------------------------------
+
+  app.get('/profile', (req, res)=> {
+
+    const user = req.session.user;
+    if(user != null){
+    res.render('profile', {user: user})             // message: message
+  }else{
+      res.redirect('/')
   }
-});
+  })
 
-app.post('/post_to_your_blog', function(req, res) {
+  // 06: CREATE A POST ---------------------------------------------------------
 
-    var inputUsername = req.body.username;
-    var inputTitle = req.body.title;
-    var inputBody = req.body.yourmessage;
-    console.log(req.body)
-    User.findOne({
-      where: {
-          username: inputUsername        // req.session.user = user;                        //
-      }
-    })
-    .then(function(user){
-      console.log(user)
-      return user.createMessage({
-        title: inputTitle,
-        body: inputBody,
+  app.get('/createpost', (req,res)=>{
+      res.render('createpost')
+  })
+
+  app.post('/createpost', (req, res) => {
+      // console.log("CHECK Title & Content " + JSON.stringify(req.body))
+      console.log("CHECK SESSION " + JSON.stringify(req.session))
+      var title = req.body.post_title;
+      var body = req.body.post_content;
+      var user = req.session.user;
+
+      Post.create({
+          title: title,
+          body: body,
+          userId: user.id
       })
-    })
-    .then ( user => {
-      res.redirect('/');                //${message.id}`
-    })
-});
-
-// POST TO YOUR BLOG-----------------------
-
-// app.get('/post_to_your_blog', function(req, res){
-//   res.render('post_to_your_blog')
-// });
-
-
-// DISPLAYING ALL MESSAGES------------------
-
-
-app.get('/show_all_posts', function(req,res){
-  Message.findAll({
-    include: [{
-    model: User
-  }]
+          .then(() => {
+              res.redirect('yourposts')
+          })
+          .catch((err)=>{
+              console.log("ERROR " + err);
+          });
   })
-  .then((messages)=>{
-    console.log(messages)
-    res.render('show_all_posts',{messages: messages})
+
+  app.get('/delete/:id', (req, res) => {
+      Post.destroy({
+          where: {
+              id: req.params.id
+          }
+      })
+      .then(() => {
+          res.redirect('/yourposts')
+      })
   })
-})
 
+ // 07: DISPLAY ALL OF YOUR POSTS ---------------------------------------------
 
+  app.get('/yourposts', (req, res) => {
+      let user = req.session.user;
+      if (user == null) {
+          res.redirect('/')
 
-// app.get('/:id', function(req,res){
-//   Message.findAll()
-//   .then((messages)=>{
-//     res.render('post_to_your_blog', {messages: messages})
-//   })
-// })
+      } else {
+          var userId = user.id
+          Post.findAll({
 
+              where: {
+                  userId: userId
+              },
+              include: [{
+                  model: User
+              }]
+          })
+              .then((yourposts) => {
+                  res.render('yourposts', { posts: yourposts });
+              })
+      }
+  })
 
-// app.get('/:id', function(req,res){
-//   Message.findAll({
-//     include: [{
-//       model: User
-//     }]
-//   })
-//   .then((messages)=>{
-//     res.render('all_user_messages', {messagesList: messages})
-//   })
-// })
+  // 08: DISPLAY ONE OF YOUR SPECIFIC POSTS -----------------------------------
 
+  app.get('/yourspecificpost/:postId', (req, res) => {
+      var postId = req.params.postId
+      Post.findOne({
+          where: {
+              id: postId
+          },
+          include: [{
+              mmodel: User
+          }]
+      })
+          .then((yourspecificpost) => {
+              res.render('yourspecificpost', { yourspecificpost: yourspecificpost });
+          })
+  })
 
+ // 09: DISPLAY ALL POSTS ------------------------------------------------------
 
-sequelize.sync()
+  app.get('/posts', (req,res)=>{//  /allposts is the form action where the GET/POST goes to
+      Post.findAll({
+          include:[{
+              model: User
+          }]
+      })
+      .then((allposts)=>{
+          res.render('posts', {posts: allposts})
+      })
+  })
 
-app.listen(3014, function(){
-  console.log("We are live on port 3014")
-})
+// 10: DISPLAY A SPECIFIC POST OF OTHER USERS ----------------------------------
 
-// app.listen('3014', ()=>{console.log('We are live on port 3014')});   (above models definition)
+  app.get('/post/:postId', (req, res) => {
+      let postId = req.params.postId
+      Post.findOne({
+          where: {
+              id: postId
+          },
+          include: [{
+              model: User
+          }]
+      })
+      .then((post)=>{
+          Comments.findAll({
+              where:{
+                  postId: postId
+              }
+          })
+          .then((comments) => {
+              res.render('specificpost',{post: post, comments: comments})
+          })
+      })
+  })
+
+// 11: LEAVE COMMENTS ----------------------------------------------------------
+
+  app.get('/comment/:postId', (req,res)=>{
+      let postId = req.params.postId
+      res.render('comments', {postId: postId})
+  })
+
+  app.post('/comment/:postId', (req,res)=>{
+      let postId = req.params.postId
+      let userId = req.session.user.id
+      let inputComment = req.body.inputComment
+      // console.log("INPUT COMMENT " + req.body.inputComment)
+
+   Comments.create({
+       postId: postId,
+       body: inputComment,
+       userId: userId
+   })
+   .then((comment)=>{
+       let postId = comment.postId
+       res.redirect('/post/' + postId)
+   })
+  })
+
+ // ENABLE SEQUELIZE.SYNC ------------------------------------------------------
+
+sequelize.sync({force: false})
+
+// CONFIGURE PORT - ------------------------------------------------------------
+
+  app.listen(3015, () => {
+      console.log('App is running on port 3015');
+  })
