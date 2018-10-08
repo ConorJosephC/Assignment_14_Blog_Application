@@ -2,61 +2,60 @@
 
 <head>
 
-    <title>Posts</title>
+  <title>Posts</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="src/style.css">
 
 </head>
 
 <body>
-	<%- include partials/navbar.ejs %>
 
-        <table class="show_all_posts">
+  <%- include partials/navbar.ejs %>
 
-          <thead scope="row">
-            <tr>
-              <td class="column_1">Title:</td>
-              <td class="column_2">Message:</td>
-            </tr>
-          </thead>
+  <table class="show_all_posts">
 
-          <tbody>
-            <tr>
-              <% for(let i= 0; i< posts.length; i++) { %>
+    <h1>See posts from all users!</h1>
 
-              <td class="column_3">
-                <%= posts[i].title %>
-              </td>
-              <td class="column_4">
-                <%= posts[i].body %>
-              </td>
-              <td>
-                <a href="/post/<%= posts[i].id %>">See comments</a>
-                <a href="/comment/<%= posts[i].id %>">Leave comments</a>
-              </td>
-            </tr>
+    <thead scope="row">
+      <tr>
+        <td class="column_1">Username</td>
+        <td class="column_1">Title:</td>
+        <td class="column_2">Message:</td>
+      </tr>
+    </thead>
 
+    <tbody>
+      <tr>
+        <% for(let i= 0; i< posts.length; i++) { %>
+        <td class="column_3">
+          <%= posts[i].username %>
+        </td>
+        <td class="column_3">
+          <%= posts[i].title %>
+        </td>
+        <td class="column_4">
+          <%= posts[i].body %>
+        </td>
+        <td class="column_3">
+          <a href="/post/<%= posts[i].id %>">See comments</a>
+        </td>
+        <td class="column_3">
+          <a href="/comment/<%= posts[i].id %>">Leave comments</a>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <br>
 
+  <h6>Want to switch account?</h6>
+  <h6><a href="/" target="_blank">Switch Account</a></h6><br>
+  <h6><a href="/logout" target="_blank">Logout</a></h6>
 
-            <% } %>
-          </tbody>
-        </table>
-
-        <br>
-
-
-        <h6>Don't have an account yet?</h6>
-          <h6><a href="/signup" target="_blank">Signup</a></h6>
-
-          <h6>
-          <a href="/logout" target="_blank">Logout</a></h6>
-
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </body>
 

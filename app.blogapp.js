@@ -26,8 +26,8 @@ app.set('view engine', 'ejs');
 app.use(session({
   store: new SequelizeStore({
     db: sequelize,
-    checkExpirationInterval: 15 * 60 * 1000, // The interval at which to cleanup expired sessions in milliseconds.
-    expiration: 24 * 60 * 60 * 1000 // The maximum age (in milliseconds) of a valid session.
+    checkExpirationInterval: 15 * 60 * 1000,
+    expiration: 24 * 60 * 60 * 1000
   }),
   secret: "any string",
   saveUninitialized: true,
@@ -70,6 +70,10 @@ const User = sequelize.define('users',{
     })
 
     const Post = sequelize.define('posts', {
+      username: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
         title: {
             type: Sequelize.STRING,
             allowNull: false
@@ -132,7 +136,7 @@ app.post('/', function (req, res) {
   			if(user!== null && password === user.password){
           console.log("user info" + JSON.stringify(user.dataValues));
           req.session.user = user;
-  				res.redirect('/profile');     // /myprofile
+  				res.redirect('/profile');
   			} else {
   				res.redirect('/?message=' + encodeURIComponent('Invalid email or password.'));
   			}
@@ -197,13 +201,14 @@ app.post('/', function (req, res) {
   })
 
   app.post('/createpost', (req, res) => {
-      // console.log("CHECK Title & Content " + JSON.stringify(req.body))
-      console.log("CHECK SESSION " + JSON.stringify(req.session))
+
+      var username = req.body.post_username;
       var title = req.body.post_title;
       var body = req.body.post_content;
       var user = req.session.user;
 
       Post.create({
+          username: username,
           title: title,
           body: body,
           userId: user.id
@@ -246,7 +251,7 @@ app.post('/', function (req, res) {
               }]
           })
               .then((yourposts) => {
-                  res.render('yourposts', { posts: yourposts });
+                  res.render('yourposts', { user: user, posts: yourposts });
               })
       }
   })
@@ -316,7 +321,6 @@ app.post('/', function (req, res) {
       let postId = req.params.postId
       let userId = req.session.user.id
       let inputComment = req.body.inputComment
-      // console.log("INPUT COMMENT " + req.body.inputComment)
 
    Comments.create({
        postId: postId,

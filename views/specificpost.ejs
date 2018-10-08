@@ -2,36 +2,53 @@
 
 <head>
 
-    <title>Specific Posts</title>
+  <title>Specific Post For Any User</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="src/style.css">
 
 </head>
 
 <body>
-	<%- include partials/navbar.ejs %>
-      <h2>
-                    <%= post.title %>
-            </h2>
 
-            <h3>
-                    <%= post.body %>
-            </h3>
-    <% for(let i= 0; i< comments.length; i++) { %>
-        <div>
-            <p>
-                <%= comments[i].body %>
+  <%- include partials/navbar.ejs %>
 
-            <p>
-        </div>
-        <%}%>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <table class="show_all_posts">
 
+    <thead scope="row">
+      <tr>
+        <td class="column_1">Username:</td>
+        <td class="column_1">Title:</td>
+        <td class="column_1">Message:</td>
+        <td class="column_2">Comments:</td>
+      </tr>
+    </thead>
 
+    <tbody>
+      <tr>
+        <td class="column_3">
+          <%= post.username %>
+        </td>
+        <td class="column_3">
+          <%= post.title %>
+        </td>
+        <td class="column_3">
+          <%= post.body %>
+        </td>
+        <% for(let i= 0; i< comments.length; i++) { %>
+        <td class="column_4">
+          <%= comments[i].body %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
 
+  <h6><a href="/logout" target="_blank">Logout</a></h6>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </body>
 
