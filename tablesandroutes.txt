@@ -1,8 +1,52 @@
-Table Users:
+      Table Users:
 
-Table Posts:
+id (PK)         username       firstname      lastname      email       password
+integer         string         string         string        string      string
 
-Table Comments:
+      Table Posts:
 
-id              body            postId        userId
+id (PK)         title           body          userId (FK)
 integer         string          integer       integer
+
+      Table Comments:
+
+id (PK)         body            postId (FK)   userId (FK)
+integer         string          integer       integer
+
+(PK) = Primary Key
+(FK) = Foreign Key
+
+
+My application will have the following routes:
+
+HOME PAGE ('/') then render ('home')
+
+This is the default page that users will arrive at.
+Here users have the option to sign in
+
+LOG OUT ('/logout')
+
+Users can log out which will end their session
+
+SIGN UP ('/signup') then redirect to ('/profile')
+
+Users can create an account and have to enter certain information about themselves.
+Once they sign up they will be redirected to their profile page
+
+PROFILE ('/profile')
+
+Users have the option to post to their own blog and also view their own messages (including any comments)
+
+CREATE A POST ('/createapost') then redirected to ('/yourposts')
+
+DELETE ('/delete/:id') then redirected to ('/yourposts')
+
+ALL OF ONE USER'S POSTS ('/yourposts')
+
+ONE OF CURRENT USERS SPECIFIC POSTS ('/yourspecificpost/:postId') then render ('yourspecificpost')
+
+DISPLAY ALL POSTS ('/posts')
+
+SPECIFIC POST OF ANOTHER USER ('/post/:postId') then render ('specificpost')
+
+LEAVE COMMENTS ('/comment/:postId') then redirect to ('/post')
