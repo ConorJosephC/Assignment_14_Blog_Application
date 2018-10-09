@@ -19,6 +19,7 @@
 
     <thead scope="row">
       <tr>
+        <td class="column_1">Username</td>
         <td class="column_1">Title:</td>
         <td class="column_2">Message:</td>
       </tr>
@@ -27,6 +28,9 @@
     <tbody>
       <tr>
         <% for (let i= 0; i< posts.length; i++) { %>
+        <td class="column_3">
+          <%= posts[i].username %>
+        </td>
         <td class="column_3">
           <%= posts[i].title %>
         </td>

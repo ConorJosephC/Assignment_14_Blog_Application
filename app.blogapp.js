@@ -313,8 +313,9 @@ app.post('/', function (req, res) {
 // 11: LEAVE COMMENTS ----------------------------------------------------------
 
   app.get('/comment/:postId', (req,res)=>{
+            const post = req.params.post;
       let postId = req.params.postId
-      res.render('comments', {postId: postId})
+      res.render('comments', {postId: postId, post: post})
   })
 
   app.post('/comment/:postId', (req,res)=>{

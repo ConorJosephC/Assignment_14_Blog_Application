@@ -13,26 +13,11 @@
 
   <%- include partials/navbar.ejs %>
 
-  <section id="your_specific_post">
-    <% for (let i= 0; i< yourposts.length; i++) { %>
-    <div>
-
-      <h2>
-              <%= yourposts[i].title %>
-          </h2>
-      <h2>
-                <%= yourposts[i].body %>
-            </h2>
-
-      <a href="/<%= yourposts[i].id %>/delete">Delete post</a>
-
-    </div>
-  </section>
-
   <table class="your_specific_post">
 
     <thead scope="row">
       <tr>
+        <td class="column_1">Username:</td>
         <td class="column_1">Title:</td>
         <td class="column_2">Message:</td>
       </tr>
@@ -41,6 +26,9 @@
     <tbody>
       <tr>
       <% for (let i= 0; i< yourposts.length; i++) { %>
+        <td class="column_3">
+          <%= yourposts[i].username %>
+        </td>
         <td class="column_3">
           <%= yourposts[i].title %>
         </td>
