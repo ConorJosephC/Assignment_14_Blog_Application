@@ -11,7 +11,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 // CONFIG DEPENDENCIES ---------------------------------------------------------
 
-const sequelize = new Sequelize('conorblogapp', 'postgres', 'p0stgr3SQL', {
+const sequelize = new Sequelize('blogapp', 'postgres', 'p0stgr3SQL', {
     host: 'localhost',
     dialect: 'postgres'
 })
