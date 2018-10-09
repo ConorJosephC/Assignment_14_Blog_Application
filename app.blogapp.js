@@ -9,9 +9,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
+// BCRYPT PASSWORD -------------------------------------------------------------
+
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
+
 // CONFIG DEPENDENCIES ---------------------------------------------------------
 
-const sequelize = new Sequelize('blogapp', 'postgres', 'p0stgr3SQL', {
+const sequelize = new Sequelize('conorblogapp', 'postgres', 'p0stgr3SQL', {
     host: 'localhost',
     dialect: 'postgres'
 })
@@ -38,6 +44,31 @@ app.use(session({
 
 app.use(express.static('./public'));
 
+// // // var password =
+// //
+// // //SYNCHRONONUS
+// // let hash = bcrypt.hashSync('password', 10);
+// //
+// // //ASYNC METHOD
+// //
+// // bcrypt.hash('password', 10, function(err, hash) {
+// //   // Store hash in database
+// // });
+//
+//
+//
+//
+//
+// //ASYNC METHOD 2
+// bcrypt.genSalt(saltRounds, function(err, salt) {
+//     bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+//         // Store hash in your password DB.
+//     });
+// });
+
+
+// Store hash in database
+
 // SET UP BODY PARSER ----------------------------------------------------------
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -63,7 +94,7 @@ const User = sequelize.define('users',{
     },
     password: {
         type: Sequelize.STRING,
-        unique: false
+        unique: false,
     },
   },   {
       timestamps: false
@@ -168,19 +199,21 @@ app.post('/', function (req, res) {
     let inputemail = req.body.email
     let inputpassword = req.body.password
 
+    bcrypt.hash(inputpassword, saltRounds).then(hash => {
     User.create({
       username: inputusername,
       firstname: inputfirstname,
       lastname: inputlastname,
       email: inputemail,
-      password: inputpassword
+      password: hash,
     })
-
     .then((user) => {
           req.session.user = user;
           res.redirect('/profile');
         });
+      })
   })
+
 
   // 05: PROFILE ---------------------------------------------------------------
 
@@ -313,9 +346,8 @@ app.post('/', function (req, res) {
 // 11: LEAVE COMMENTS ----------------------------------------------------------
 
   app.get('/comment/:postId', (req,res)=>{
-            const post = req.params.post;
       let postId = req.params.postId
-      res.render('comments', {postId: postId, post: post})
+      res.render('comments', {postId: postId})
   })
 
   app.post('/comment/:postId', (req,res)=>{
