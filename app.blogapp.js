@@ -9,9 +9,18 @@ const app = express();
 const bodyParser = require('body-parser');
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
+// BCRYPT PASSWORD -------------------------------------------------------------
+
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
+//
+// const myPlaintextPassword = 's0/\/\P4$$w0rD';
+// const someOtherPlaintextPassword = 'not_bacon';
+
 // CONFIG DEPENDENCIES ---------------------------------------------------------
 
-const sequelize = new Sequelize('blogapp', 'postgres', 'p0stgr3SQL', {
+const sequelize = new Sequelize('conorblogapp', 'postgres', 'p0stgr3SQL', {
     host: 'localhost',
     dialect: 'postgres'
 })
@@ -63,7 +72,7 @@ const User = sequelize.define('users',{
     },
     password: {
         type: Sequelize.STRING,
-        unique: false
+        unique: false,
     },
   },   {
       timestamps: false
@@ -131,19 +140,20 @@ app.post('/', function (req, res) {
   		where: {
   			username: username
   		}
-  	}).then(function(user){
+  	}).then((user) =>{
+          bcrypt.compare(password, user.password, function(err, result) {
+            if (username !== null && result) {
+              req.session.user = user;
+              res.redirect('/profile');
+            } else {
+              console.log(err);
+              res.send('Your password is incorrect');
+            }
+        });
+  	})
+  })
 
-  			if(user!== null && password === user.password){
-          console.log("user info" + JSON.stringify(user.dataValues));
-          req.session.user = user;
-  				res.redirect('/profile');
-  			} else {
-  				res.redirect('/?message=' + encodeURIComponent('Invalid email or password.'));
-  			}
-  	});
-  });
-
-  // 03: LOG OUT (need pathway)-------------------------------------------------
+  // 03: LOG OUT ---------------------------------------------------------------
 
   app.get('/logout', (req,res)=>{
     req.session.destroy(function(error) {
@@ -168,18 +178,19 @@ app.post('/', function (req, res) {
     let inputemail = req.body.email
     let inputpassword = req.body.password
 
+    bcrypt.hash(inputpassword, saltRounds).then(hash => {
     User.create({
       username: inputusername,
       firstname: inputfirstname,
       lastname: inputlastname,
       email: inputemail,
-      password: inputpassword
+      password: hash,
     })
-
     .then((user) => {
           req.session.user = user;
           res.redirect('/profile');
         });
+      })
   })
 
   // 05: PROFILE ---------------------------------------------------------------
@@ -313,9 +324,8 @@ app.post('/', function (req, res) {
 // 11: LEAVE COMMENTS ----------------------------------------------------------
 
   app.get('/comment/:postId', (req,res)=>{
-            const post = req.params.post;
       let postId = req.params.postId
-      res.render('comments', {postId: postId, post: post})
+      res.render('comments', {postId: postId})
   })
 
   app.post('/comment/:postId', (req,res)=>{
