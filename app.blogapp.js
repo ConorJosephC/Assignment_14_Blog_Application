@@ -129,7 +129,7 @@ app.post('/', function (req, res) {
     if(username.length === 0) {
       res.redirect('/?message=' + encodeURIComponent("Please fill in your correct username."));
       return;
-    }
+     }
 
     if(password.length === 0) {
       res.redirect('/?message=' + encodeURIComponent("Please fill in your password."));
@@ -177,7 +177,11 @@ app.post('/', function (req, res) {
     let inputlastname = req.body.lastname
     let inputemail = req.body.email
     let inputpassword = req.body.password
+    let inputconfirmpassword = req.body.confirmpassword
 
+    if (inputpassword !== inputconfirmpassword) {
+      res.send('Your password does not match');
+    } else {
     bcrypt.hash(inputpassword, saltRounds).then(hash => {
     User.create({
       username: inputusername,
@@ -186,12 +190,14 @@ app.post('/', function (req, res) {
       email: inputemail,
       password: hash,
     })
+
     .then((user) => {
           req.session.user = user;
           res.redirect('/profile');
         });
       })
-  })
+  }
+})
 
   // 05: PROFILE ---------------------------------------------------------------
 
