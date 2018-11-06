@@ -20,7 +20,7 @@ const saltRounds = 10;
 
 // CONFIG DEPENDENCIES ---------------------------------------------------------
 
-const sequelize = new Sequelize('conorblogapp', 'postgres', 'p0stgr3SQL', {
+const sequelize = new Sequelize('conorblogapp', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
     host: 'localhost',
     dialect: 'postgres'
 })
@@ -356,6 +356,6 @@ sequelize.sync({force: false})
 
 // CONFIGURE PORT - ------------------------------------------------------------
 
-  app.listen(3015, () => {
-      console.log('App is running on port 3015');
+  app.listen(3016, () => {
+      console.log('App is running on port 3016');
   })

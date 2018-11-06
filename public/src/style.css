@@ -5,13 +5,13 @@ body {
 }
 
 h1   {
-text-align: center;
+  text-align: center;
   margin-top: 50px;
   margin-bottom: 50px
 }
 
 h2   {
-text-align: center;
+  text-align: center;
   font-size: 30px;
   margin-top: 10px
 }
@@ -56,24 +56,24 @@ p {
 
 .column_1 {
   width: 200px;
-    margin-bottom: 10px;
-    padding: 8px;
+  margin-bottom: 10px;
+  padding: 8px;
 }
 
 .column_2 {
   width: 400px;
-      margin-bottom: 10px;
-      padding: 8px;
+  margin-bottom: 10px;
+  padding: 8px;
 }
 
 .column_3 {
   width: 200px;
-      margin-bottom: 10px;
-      padding: 4px;
+  margin-bottom: 10px;
+  padding: 4px;
 }
 
 .column_4 {
   width: 400px;
-      margin-bottom: 10px;
-      padding: 4px;
+  margin-bottom: 10px;
+  padding: 4px;
 }
